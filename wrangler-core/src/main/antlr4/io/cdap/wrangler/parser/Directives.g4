@@ -57,6 +57,8 @@ directive
     | text
     | number
     | bool
+    | byteSize
+    | timeDuration
     | column
     | colList
     | numberList
@@ -128,7 +130,7 @@ propertyList
  ;
 
 property
- : Identifier '=' ( text | number | bool )
+ : Identifier '=' ( text | number | bool | byteSize | timeDuration )
  ;
 
 numberRanges
@@ -140,7 +142,7 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String | Number | Column | Bool | ByteSize | TimeDuration
  ;
 
 ecommand
@@ -165,6 +167,14 @@ number
 
 bool
  : Bool
+ ;
+
+byteSize
+ : ByteSize
+ ;
+
+timeDuration
+ : TimeDuration
  ;
 
 condition
@@ -274,6 +284,16 @@ String
  | '"'  ( EscapeSequence | ~('"') )* '"'
  ;
 
+ByteSize
+  : [1-9] Digit* ByteUnit
+  | '0' ByteUnit
+  ;
+
+TimeDuration
+  : [1-9] Digit* TimeUnit
+  | '0' TimeUnit
+  ;
+
 EscapeSequence
    :   '\\' ('b'|'t'|'n'|'f'|'r'|'"'|'\''|'\\')
    |   UnicodeEscape
@@ -311,3 +331,11 @@ fragment Int
 fragment Digit
  : [0-9]
  ;
+
+fragment ByteUnit
+  : ( 'B' | 'KB' | 'MB' | 'GB' | 'TB' )
+  ;
+
+fragment TimeUnit
+  : ( 'ms' | 's' | 'm' | 'h' )
+  ;
